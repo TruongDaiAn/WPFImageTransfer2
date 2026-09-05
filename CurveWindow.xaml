@@ -1,0 +1,57 @@
+<Window x:Class="WPFImageTransfer.CurveWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Color Curves" Height="480" Width="700"
+        WindowStartupLocation="CenterOwner" ResizeMode="NoResize"
+        Background="#202124" Foreground="#E8EAED">
+    <Grid Margin="10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="320" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        
+        <StackPanel Grid.Column="0" HorizontalAlignment="Center">
+            <TextBlock Text="Đường cong màu" Margin="0,0,0,5" FontWeight="SemiBold" />
+            <ComboBox x:Name="cmbChannel" Width="150" Margin="0,0,0,10" SelectionChanged="CmbChannel_SelectionChanged" Background="#2D2D30" Foreground="White">
+                <ComboBoxItem Content="Kênh RGB" Tag="RGB" IsSelected="True" Foreground="Black"/>
+                <ComboBoxItem Content="Kênh Đỏ (R)" Tag="Red" Foreground="Black"/>
+                <ComboBoxItem Content="Kênh Xanh cỏ (G)" Tag="Green" Foreground="Black"/>
+                <ComboBoxItem Content="Kênh Xanh dương (B)" Tag="Blue" Foreground="Black"/>
+            </ComboBox>
+            <Border BorderBrush="#3F3F46" BorderThickness="2" Width="260" Height="260" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Canvas x:Name="CurveCanvas" Width="256" Height="256" Background="#2D2D30" 
+                        MouseLeftButtonDown="CurveCanvas_MouseLeftButtonDown"
+                        MouseMove="CurveCanvas_MouseMove"
+                        MouseLeftButtonUp="CurveCanvas_MouseLeftButtonUp"
+                        MouseRightButtonDown="CurveCanvas_MouseRightButtonDown">
+                    <!-- Background Grid Lines -->
+                    <Line X1="64" Y1="0" X2="64" Y2="256" Stroke="#3F3F46" StrokeThickness="1" />
+                    <Line X1="128" Y1="0" X2="128" Y2="256" Stroke="#3F3F46" StrokeThickness="1" />
+                    <Line X1="192" Y1="0" X2="192" Y2="256" Stroke="#3F3F46" StrokeThickness="1" />
+                    <Line X1="0" Y1="64" X2="256" Y2="64" Stroke="#3F3F46" StrokeThickness="1" />
+                    <Line X1="0" Y1="128" X2="256" Y2="128" Stroke="#3F3F46" StrokeThickness="1" />
+                    <Line X1="0" Y1="192" X2="256" Y2="192" Stroke="#3F3F46" StrokeThickness="1" />
+                    <!-- Diagonal Reference Line -->
+                    <Line X1="0" Y1="256" X2="256" Y2="0" Stroke="#555555" StrokeThickness="1" StrokeDashArray="4 4" />
+                    
+                    <Polyline x:Name="CurveLine" Stroke="White" StrokeThickness="2" />
+                </Canvas>
+            </Border>
+            <TextBlock Text="Chuột trái: Thêm/Di chuyển điểm" Margin="0,15,0,0" Foreground="#AAAAAA" FontSize="11" />
+            <TextBlock Text="Chuột phải: Xóa điểm" Margin="0,5,0,0" Foreground="#AAAAAA" FontSize="11" />
+            
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,20,0,0">
+                <Button Content="Mặc định" Click="BtnReset_Click" Height="30" Width="80" Margin="0,0,10,0" Padding="5" Background="#3E3E42" Foreground="White" BorderThickness="0" />
+                <Button Content="Hủy" Click="BtnCancel_Click" Height="30" Width="60" Margin="0,0,10,0" Padding="5" Background="#666666" Foreground="White" BorderThickness="0" />
+                <Button Content="Áp dụng" Click="BtnApply_Click" Height="30" Width="80" Padding="5" Background="#256D9B" Foreground="White" BorderThickness="0" FontWeight="SemiBold" />
+            </StackPanel>
+        </StackPanel>
+
+        <StackPanel Grid.Column="1" Margin="10,0,0,0">
+            <TextBlock Text="Xem trước (Preview)" Margin="0,0,0,10" FontWeight="Bold" />
+            <Border BorderBrush="#3F3F46" BorderThickness="2" Width="Auto" Height="320">
+                <Image x:Name="ImgPreview" Stretch="Uniform" />
+            </Border>
+        </StackPanel>
+    </Grid>
+</Window>

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WPF Image Transfer - Use Case Diagram</title>
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            margin: 0;
+        }
+
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 98vw;
+            max-width: 98%;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .mermaid {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+
+        .mermaid svg {
+            width: 100% !important;
+            max-width: 100% !important;
+            height: auto !important;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>WPF Image Transfer - Use Case Diagram</h2>
+        <div class="mermaid">
+            flowchart TB
+            %% Actor Definition
+            User((User))
+
+            %% Image Queue Management System Boundary
+            subgraph ManageImages [Image Queue Management]
+                Add("Add image to queue")
+                Clear("Clear all images")
+                Select("Select image to edit")
+                LoadThumb("Load image thumbnail")
+                
+                Select -.->|&lt;&lt;include&gt;&gt;| LoadThumb
+            end
+
+            %% Viewing and Interaction System Boundary
+            subgraph Viewing [Viewing and Interaction]
+                Zoom("Zoom In / Out")
+                Pan("Pan Image")
+                Preview("Full Screen Preview")
+            end
+
+            %% Image Editing and Filters System Boundary
+            subgraph ImageEditing [Image Editing & Filters]
+                Adjust("Adjust Brightness, Contrast & Opacity")
+                Effects("Apply Basic Filters")
+                Rotate("Rotate 90 Degrees")
+                UndoRedo("Undo / Redo Actions")
+                ApplyAll("Apply filters to all queue images")
+
+                Effects -.->|&lt;&lt;extend&gt;&gt;| ApplyAll
+                Adjust -.->|&lt;&lt;extend&gt;&gt;| ApplyAll
+            end
+
+            %% Advanced Segmentation and Curves System Boundary
+            subgraph AdvancedTools [Advanced Segmentation & Curves]
+                Curve("Color Curves Adjustment (LUT)")
+                Mask("Geometric Mask Cropping (Discord style)")
+                SelectCrop("Custom Selection and Crop")
+                
+                GrabCut("GrabCut Object Segmentation")
+                Ellipse("Ellipse Crop (Transparent background)")
+                Rect("Rectangular Crop")
+                
+                SelectCrop -.->|&lt;&lt;extend&gt;&gt;| GrabCut
+                SelectCrop -.->|&lt;&lt;extend&gt;&gt;| Ellipse
+                SelectCrop -.->|&lt;&lt;extend&gt;&gt;| Rect
+            end
+
+            %% Save and Export System Boundary
+            subgraph Exporting [Save & Export]
+                Save("Save current image")
+                ExportAll("Batch Export all processed images")
+                
+                Save -.->|&lt;&lt;extend&gt;&gt;| ExportAll
+            end
+
+            %% Relationships between Actor and main Use Cases
+            User --> Add
+            User --> Clear
+            User --> Select
+            
+            User --> Zoom
+            User --> Pan
+            User --> Preview
+            
+            User --> Adjust
+            User --> Effects
+            User --> Rotate
+            User --> UndoRedo
+            
+            User --> Curve
+            User --> Mask
+            User --> SelectCrop
+            
+            User --> Save
+        </div>
+    </div>
+</body>
+
+</html>
