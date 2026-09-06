@@ -1,6 +1,10 @@
 using Emgu.CV;
 using Emgu.CV.CvEnum;
+using Emgu.CV.Quality;
 using System;
+using System.Diagnostics;
+using System.Globalization;
+using System.IO;
 
 namespace WPFImageTransfer.Services.Processing
 {
@@ -29,11 +33,21 @@ namespace WPFImageTransfer.Services.Processing
                 ssim = new("SSIM", $"{CalculateSsim(reference, enhanced):0.0000}", "↑", "So với ảnh tham chiếu");
             }
 
+            double? brisqueVal = CalculateBrisque(enhanced);
+            double? niqeVal = CalculateNiqe(enhanced);
+
+            ImageQualityMetric niqe = niqeVal.HasValue
+                ? new("NIQE", $"{niqeVal.Value:0.0000}", "↓", "Độ tự nhiên thống kê ảnh")
+                : new("NIQE", "Không tính được", "↓", "Cần môi trường Python/SciPy");
+
+            ImageQualityMetric brisque = brisqueVal.HasValue
+                ? new("BRISQUE", $"{brisqueVal.Value:0.0000}", "↓", "Chất lượng cảm nhận thị giác")
+                : new("BRISQUE", "Không tính được", "↓", "Cần tệp mô hình BRISQUE");
+
             return new ImageQualityEvaluation(
                 new("Entropy", $"{enhancedEntropy:0.0000} bit", "↑*", $"Ảnh gốc: {originalEntropy:0.0000} bit"),
                 new("LOE", $"{loe:0.0000}", "↓", "Bảo toàn thứ tự độ sáng"), psnr, ssim,
-                new("NIQE", "Chưa tích hợp", "↓", "Cần mô hình thống kê NIQE"),
-                new("BRISQUE", "Chưa tích hợp", "↓", "Cần mô hình thống kê BRISQUE"));
+                niqe, brisque);
         }
 
         private static Mat ToGray(Mat source)
@@ -139,6 +153,43 @@ namespace WPFImageTransfer.Services.Processing
         {
             if (first.Width != second.Width || first.Height != second.Height)
                 throw new ArgumentException("Ảnh tham chiếu và ảnh kết quả phải cùng kích thước.");
+        }
+
+        private static string ResolvePath(string relativePath)
+        {
+            string baseDir = AppDomain.CurrentDomain.BaseDirectory;
+            string path1 = Path.Combine(baseDir, relativePath);
+            if (File.Exists(path1)) return path1;
+
+            string path2 = Path.Combine(baseDir, "..", "..", "..", relativePath);
+            if (File.Exists(path2)) return Path.GetFullPath(path2);
+
+            return path1;
+        }
+
+        public static double? CalculateBrisque(Mat source)
+        {
+            try
+            {
+                string modelPath = ResolvePath(Path.Combine("Assets", "Models", "brisque_model_live.yml"));
+                string rangePath = ResolvePath(Path.Combine("Assets", "Models", "brisque_range_live.yml"));
+                if (!File.Exists(modelPath) || !File.Exists(rangePath))
+                    return null;
+
+                using var brisque = new QualityBRISQUE(modelPath, rangePath);
+                var score = QualityInvoke.Compute(brisque, source);
+                if (double.IsNaN(score.V0) || double.IsInfinity(score.V0)) return null;
+                return score.V0;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public static double? CalculateNiqe(Mat source)
+        {
+            return NiqeCalculator.Compute(source);
         }
     }
 }

@@ -391,6 +391,10 @@ namespace WPFImageTransfer
             lblPsnrNote.Text = evaluation.Psnr.Note;
             lblSsim.Text = evaluation.Ssim.Value;
             lblSsimNote.Text = evaluation.Ssim.Note;
+            lblNiqe.Text = evaluation.Niqe.Value;
+            lblNiqeNote.Text = evaluation.Niqe.Note;
+            lblBrisque.Text = evaluation.Brisque.Value;
+            lblBrisqueNote.Text = evaluation.Brisque.Note;
         }
 
         private void CbShowOriginal_PreviewMouseDown(object sender, MouseButtonEventArgs e)
