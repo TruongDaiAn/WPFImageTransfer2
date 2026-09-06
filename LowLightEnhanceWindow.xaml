@@ -82,8 +82,8 @@
 
                 <GroupBox Header="4. Đánh giá chất lượng ảnh" Foreground="#007ACC" FontWeight="Bold" Margin="0,0,0,12" Padding="8" BorderBrush="#3F3F46">
                     <StackPanel>
-                        <Button Content="Thêm ảnh gốc" Click="BtnSelectReference_Click" Height="30" Margin="0,0,0,8" Background="#3E3E42" Foreground="White" BorderThickness="0" ToolTip="Chọn ảnh gốc để so sánh với ảnh sau chỉnh sửa; ảnh gốc không được hiển thị"/>
-                        <TextBlock x:Name="lblReferenceInfo" Text="Chưa thêm ảnh gốc để so sánh" Foreground="#AAAAAA" FontSize="11" TextWrapping="Wrap" Margin="0,0,0,8"/>
+                        <Button Content="Thêm ảnh tham chiếu (Ground Truth)" Click="BtnSelectReference_Click" Height="30" Margin="0,0,0,8" Background="#3E3E42" Foreground="White" BorderThickness="0" ToolTip="Chọn ảnh tham chiếu (chụp chuẩn đủ sáng) để đo chỉ số PSNR và SSIM"/>
+                        <TextBlock x:Name="lblReferenceInfo" Text="Chưa thêm ảnh tham chiếu để so sánh" Foreground="#AAAAAA" FontSize="11" TextWrapping="Wrap" Margin="0,0,0,8"/>
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="75"/><ColumnDefinition Width="90"/><ColumnDefinition Width="35"/><ColumnDefinition Width="*"/>

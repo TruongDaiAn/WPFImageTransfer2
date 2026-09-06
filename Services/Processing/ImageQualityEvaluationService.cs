@@ -38,14 +38,14 @@ namespace WPFImageTransfer.Services.Processing
 
             ImageQualityMetric niqe = niqeVal.HasValue
                 ? new("NIQE", $"{niqeVal.Value:0.0000}", "↓", "Độ tự nhiên thống kê ảnh")
-                : new("NIQE", "Không tính được", "↓", "Cần môi trường Python/SciPy");
+                : new("NIQE", "Không tính được", "↓", "Lỗi tính toán NIQE");
 
             ImageQualityMetric brisque = brisqueVal.HasValue
                 ? new("BRISQUE", $"{brisqueVal.Value:0.0000}", "↓", "Chất lượng cảm nhận thị giác")
                 : new("BRISQUE", "Không tính được", "↓", "Cần tệp mô hình BRISQUE");
 
             return new ImageQualityEvaluation(
-                new("Entropy", $"{enhancedEntropy:0.0000} bit", "↑*", $"Ảnh gốc: {originalEntropy:0.0000} bit"),
+                new("Entropy", $"{enhancedEntropy:0.0000} bit", "↑*", $"Ảnh đầu vào: {originalEntropy:0.0000} bit"),
                 new("LOE", $"{loe:0.0000}", "↓", "Bảo toàn thứ tự độ sáng"), psnr, ssim,
                 niqe, brisque);
         }

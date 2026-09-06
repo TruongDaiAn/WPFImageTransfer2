@@ -378,7 +378,7 @@ namespace WPFImageTransfer
             }
             _referenceMat?.Dispose();
             _referenceMat = loaded.Clone();
-            lblReferenceInfo.Text = $"Đã thêm ảnh gốc để so sánh: {System.IO.Path.GetFileName(dialog.FileName)}";
+            lblReferenceInfo.Text = $"Đã thêm ảnh tham chiếu: {System.IO.Path.GetFileName(dialog.FileName)}";
             _ = TriggerUpdateAsync();
         }
 
